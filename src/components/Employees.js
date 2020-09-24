@@ -4,6 +4,7 @@ import axios from 'axios';
 class Employees extends Component {
 
     state = {
+        search: "",
         employees: []
     }
 
@@ -14,7 +15,21 @@ class Employees extends Component {
                 this.setState({
                     employees: res.data.results
                 })
+                this.state.employees_orig = res.data.results
             })
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("input", e.target.value);
+        const employees = this.state.employees_orig.filter(employee => employee.name.first.toLowerCase().startsWith(e.target.value.toLowerCase()));
+        this.setState({ employees });
+    }
+
+    handleFilter = (e) => {
+        e.preventDefault();
+        console.log("input", e.target.getAttribute('column'));
+
     }
 
 
@@ -25,18 +40,13 @@ class Employees extends Component {
             employees.map(employee => {
                 console.log(employee)
                 return (
-                    <div key={employee.email}>
-                        <table className="table">
-                            <tbody>
-                                <tr>
-                                    <th scope="row"></th>
-                                    <td><img src={employee.picture.thumbnail}/></td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <tr key={employee.email}>
+                        <th scope="row"><img src={employee.picture.thumbnail} /></th>
+                        <td>{employee.name.first}</td>
+                        <td>{employee.name.last}</td>
+                        <td>{employee.email}</td>
+                        <td>{employee.phone}</td>
+                    </tr>
                 )
 
             })
@@ -44,25 +54,38 @@ class Employees extends Component {
 
         ) : (
 
-                <div>No Employee Information Available</div>
+                <tr><th scope="col">No Employee Information Available at this time</th></tr>
             )
 
         console.log("employees: ", employeesList);
 
         return (
             <div>
-                <h1>Employee Directory</h1>
+                    <form className="jumbotron form-group">
+                        <center>
+                            <h1 className="display-4">Employee Directory</h1>
+                            <hr className="my-4"></hr>
+                            <input type="text" className="form-control" id="filterName" placeholder="Filter By First Name" onChange={this.handleSubmit}></input>
+                            <br></br>
+                        </center>
+                    </form>
+
+
                 <table className="table">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                            <th scope="col">Image</th>
+                            <th onClick={this.handleFilter} column= "name.first" scope="col">First Name</th>
+                            <th onClick={this.handleFilter} column= "name.last" scope="col">Last Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        {employeesList}
+                    </tbody>
                 </table>
-                {employeesList}
+
             </div>
         )
     }
