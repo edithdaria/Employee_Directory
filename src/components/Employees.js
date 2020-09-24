@@ -7,45 +7,64 @@ class Employees extends Component {
         employees: []
     }
 
-    componentDidMount(){
+    componentDidMount() {
         axios.get('https://randomuser.me/api/?results=10')
-        .then(res =>{
-            console.log(res.data.results);
-            this.setState({
-                employees: res.data.results
+            .then(res => {
+                console.log(res.data.results);
+                this.setState({
+                    employees: res.data.results
+                })
             })
-        })
     }
 
 
-    render(){
-        const {employees} = this.state;
+    render() {
+        const { employees } = this.state;
 
         const employeesList = employees.length ? (
-            employees.map(employee =>{
+            employees.map(employee => {
+                console.log(employee)
                 return (
-                <div key={employee.email}>
-                <div>
-                <ul>
-                    <li>{employee.name}</li>
-                    </ul>
-                </div>
-                </div>
+                    <div key={employee.email}>
+                        <table className="table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td><img src={employee.picture.thumbnail}/></td>
+                                    <td>the Bird</td>
+                                    <td>@twitter</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 )
 
             })
 
+
         ) : (
 
-            <div>No Employee Information Available</div>
-        )
+                <div>No Employee Information Available</div>
+            )
 
-    return (
-        <div>
-        <h1>Employee Directory</h1>
-        {employeesList}
-        </div>
-    )
+        console.log("employees: ", employeesList);
+
+        return (
+            <div>
+                <h1>Employee Directory</h1>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                </table>
+                {employeesList}
+            </div>
+        )
     }
 }
 
