@@ -5,11 +5,15 @@ class Employees extends Component {
 
     state = {
         search: "",
-        employees: []
+        employees: [],
+        fn: React.createRef(),
+        fn_sort: null,
+        ln: React.createRef(),
+        ln_sort: null
     }
 
     componentDidMount() {
-        axios.get('https://randomuser.me/api/?results=10')
+        axios.get('https://randomuser.me/api/?results=100')
             .then(res => {
                 console.log(res.data.results);
                 this.setState({
@@ -28,8 +32,53 @@ class Employees extends Component {
 
     handleFilter = (e) => {
         e.preventDefault();
-        console.log("input", e.target.getAttribute('column'));
-
+        let column = e.target.getAttribute('column');
+        let employees = null
+        if (column == "name.first") {
+            switch (this.state.fn_sort) {
+                case null:   this.state.fn_sort = "asc";  break;
+                case "asc":  this.state.fn_sort = "desc"; break;
+                case "desc": this.state.fn_sort = "asc";  break;
+            }
+            this.state.ln_sort = null
+            this.state.fn.current.innerHTML = "First Name (" + this.state.fn_sort + ")"
+            this.state.ln.current.innerHTML = "Last Name"
+            switch (this.state.fn_sort) {
+                case "asc":  
+                    employees = this.state.employees.sort(
+                        (e1, e2) => e1.name.first.localeCompare(e2.name.first)
+                    )
+                    break
+                case "desc": 
+                    employees = this.state.employees.sort(
+                        (e1, e2) => e2.name.first.localeCompare(e1.name.first)
+                    )
+                    break
+            }
+        }
+        if (column == "name.last") {
+            switch (this.state.ln_sort) {
+                case null:   this.state.ln_sort = "asc";  break;
+                case "asc":  this.state.ln_sort = "desc"; break;
+                case "desc": this.state.ln_sort = "asc";  break;
+            }
+            this.state.fn_sort = null
+            this.state.fn.current.innerHTML = "First Name"
+            this.state.ln.current.innerHTML = "Last Name (" + this.state.ln_sort + ")"
+            switch (this.state.ln_sort) {
+                case "asc":  
+                    employees = this.state.employees.sort(
+                        (e1, e2) => e1.name.last.localeCompare(e2.name.last)
+                    )
+                    break
+                case "desc": 
+                    employees = this.state.employees.sort(
+                        (e1, e2) => e2.name.last.localeCompare(e1.name.last)
+                    )
+                    break
+            }
+        }
+        this.setState({ employees });
     }
 
 
@@ -75,8 +124,8 @@ class Employees extends Component {
                     <thead>
                         <tr>
                             <th scope="col">Image</th>
-                            <th onClick={this.handleFilter} column= "name.first" scope="col">First Name</th>
-                            <th onClick={this.handleFilter} column= "name.last" scope="col">Last Name</th>
+                            <th onClick={this.handleFilter} ref={this.state.fn} column= "name.first" scope="col">First Name</th>
+                            <th onClick={this.handleFilter} ref={this.state.ln} column= "name.last" scope="col">Last Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone</th>
                         </tr>
