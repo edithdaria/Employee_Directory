@@ -36,5 +36,5 @@ If you have any questions don't hesitate to create an issue for this repository
 [edithdaria](https://github.com/edithdaria)
 
 ## Demo
-![Demo](./public/assets/app.gif)
+![Demo](./public/app.gif)
 
