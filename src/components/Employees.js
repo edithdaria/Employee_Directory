@@ -23,14 +23,14 @@ class Employees extends Component {
             })
     }
 
-    handleSubmit = (e) => {
+    handleFilter = (e) => {
         e.preventDefault();
         console.log("input", e.target.value);
         const employees = this.state.employees_orig.filter(employee => employee.name.first.toLowerCase().startsWith(e.target.value.toLowerCase()));
         this.setState({ employees });
     }
 
-    handleFilter = (e) => {
+    handleSort = (e) => {
         e.preventDefault();
         let column = e.target.getAttribute('column');
         let employees = null
@@ -114,7 +114,7 @@ class Employees extends Component {
                         <center>
                             <h1 className="display-4">Employee Directory</h1>
                             <hr className="my-4"></hr>
-                            <input type="text" className="form-control" id="filterName" placeholder="Filter By First Name" onChange={this.handleSubmit}></input>
+                            <input type="text" className="form-control" id="filterName" placeholder="Filter By First Name" onChange={this.handleFilter}></input>
                             <br></br>
                         </center>
                     </form>
@@ -124,8 +124,8 @@ class Employees extends Component {
                     <thead>
                         <tr>
                             <th scope="col">Image</th>
-                            <th onClick={this.handleFilter} ref={this.state.fn} column= "name.first" scope="col">First Name</th>
-                            <th onClick={this.handleFilter} ref={this.state.ln} column= "name.last" scope="col">Last Name</th>
+                            <th onClick={this.handleSort} ref={this.state.fn} column= "name.first" scope="col">First Name</th>
+                            <th onClick={this.handleSort} ref={this.state.ln} column= "name.last" scope="col">Last Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone</th>
                         </tr>
