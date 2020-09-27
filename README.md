@@ -5,7 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
-This app allows user to filter employees by name and sort by first and last name.
+This app allows user to filter employees by name and sort by first and last name. Try this app by following the below link: 
+https://edithdaria.github.io/Employee_Directory/
 
 ## Table Of Contents
 * [Installation](#Installation)
