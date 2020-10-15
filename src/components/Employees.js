@@ -9,7 +9,11 @@ class Employees extends Component {
         fn: React.createRef(),
         fn_sort: null,
         ln: React.createRef(),
-        ln_sort: null
+        ln_sort: null,
+        em: React.createRef(),
+        em_sort: null,
+        ph: React.createRef(),
+        ph_sort: null
     }
 
     componentDidMount() {
@@ -40,9 +44,13 @@ class Employees extends Component {
                 case "asc":  this.state.fn_sort = "desc"; break;
                 case "desc": this.state.fn_sort = "asc";  break;
             }
-            this.state.ln_sort = null
             this.state.fn.current.innerHTML = "First Name (" + this.state.fn_sort + ")"
+            this.state.ln_sort = null
             this.state.ln.current.innerHTML = "Last Name"
+            this.state.em_sort = null
+            this.state.em.current.innerHTML = "Email"
+            this.state.ph_sort = null
+            this.state.ph.current.innerHTML = "Phone"           
             switch (this.state.fn_sort) {
                 case "asc":  
                     employees = this.state.employees.sort(
@@ -65,6 +73,10 @@ class Employees extends Component {
             this.state.fn_sort = null
             this.state.fn.current.innerHTML = "First Name"
             this.state.ln.current.innerHTML = "Last Name (" + this.state.ln_sort + ")"
+            this.state.em_sort = null
+            this.state.em.current.innerHTML = "Email"
+            this.state.ph_sort = null
+            this.state.ph.current.innerHTML = "Phone"
             switch (this.state.ln_sort) {
                 case "asc":  
                     employees = this.state.employees.sort(
@@ -78,6 +90,61 @@ class Employees extends Component {
                     break
             }
         }
+
+        if (column == "email") {
+            switch (this.state.em_sort) {
+                case null:   this.state.em_sort = "asc";  break;
+                case "asc":  this.state.em_sort = "desc"; break;
+                case "desc": this.state.em_sort = "asc";  break;
+            }
+            this.state.fn_sort = null
+            this.state.fn.current.innerHTML = "First Name"
+            this.state.ln_sort = null
+            this.state.ln.current.innerHTML = "Last Name"
+            this.state.em.current.innerHTML = "Email (" + this.state.em_sort + ")"
+            this.state.ph_sort = null
+            this.state.ph.current.innerHTML = "Phone"
+            switch (this.state.em_sort) {
+                case "asc":  
+                    employees = this.state.employees.sort(
+                        (e1, e2) => e1.email.localeCompare(e2.email)
+                    )
+                    break
+                case "desc": 
+                    employees = this.state.employees.sort(
+                        (e1, e2) => e2.email.localeCompare(e1.email)
+                    )
+                    break
+            }
+        }
+
+        if (column == "phone") {
+            switch (this.state.ph_sort) {
+                case null:   this.state.ph_sort = "asc";  break;
+                case "asc":  this.state.ph_sort = "desc"; break;
+                case "desc": this.state.ph_sort = "asc";  break;
+            }
+            this.state.fn_sort = null
+            this.state.fn.current.innerHTML = "First Name"
+            this.state.ln_sort = null
+            this.state.ln.current.innerHTML = "Last Name"
+            this.state.em_sort = null
+            this.state.em.current.innerHTML = "Email"
+            this.state.ph.current.innerHTML = "Phone (" + this.state.ph_sort + ")"
+            switch (this.state.ph_sort) {
+                case "asc":  
+                    employees = this.state.employees.sort(
+                        (e1, e2) => e1.phone.localeCompare(e2.phone)
+                    )
+                    break
+                case "desc": 
+                    employees = this.state.employees.sort(
+                        (e1, e2) => e2.phone.localeCompare(e1.phone)
+                    )
+                    break
+            }
+        }
+
         this.setState({ employees });
     }
 
@@ -126,8 +193,8 @@ class Employees extends Component {
                             <th scope="col">Image</th>
                             <th onClick={this.handleSort} ref={this.state.fn} column= "name.first" scope="col">First Name</th>
                             <th onClick={this.handleSort} ref={this.state.ln} column= "name.last" scope="col">Last Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
+                            <th onClick={this.handleSort} ref={this.state.em} column= "email" scope="col">Email</th>
+                            <th onClick={this.handleSort} ref={this.state.ph} column= "phone" scope="col">Phone</th>
                         </tr>
                     </thead>
                     <tbody>
